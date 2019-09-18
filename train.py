@@ -32,39 +32,41 @@ def main(args):
                      hs=0,
                      iter=args.epoch)
 
-    word_vocab_size = 0
-    entity_vocab_size = 0
-    for token in model.wv.vocab:
-        if regex_entity.match(token):
-            entity_vocab_size += 1
-        else:
-            word_vocab_size += 1
+    model.save(all_vectors_file + ".model")
 
-    total_vocab_size = word_vocab_size + entity_vocab_size
-    logger.info(f'word vocabulary size: {word_vocab_size}')
-    logger.info(f'entity vocabulary size: {entity_vocab_size}')
-    logger.info(f'total vocabulary size: {total_vocab_size}')
-
-    logger.info('writing word/entity vectors to files')
-    with open(word_vectors_file, 'w') as fo_word, \
-         open(entity_vectors_file, 'w') as fo_entity, \
-         open(all_vectors_file, 'w') as fo_all:
-
-        # write word2vec headers to each file
-        print(word_vocab_size, args.embed_size, file=fo_word)
-        print(entity_vocab_size, args.embed_size, file=fo_entity)
-        print(total_vocab_size, args.embed_size, file=fo_all)
-
-        # write tokens and vectors
-        for (token, _) in sorted(model.wv.vocab.items(), key=lambda t: -t[1].count):
-            vector = model.wv[token]
-
-            if regex_entity.match(token):
-                print(token[2:-2], *vector, file=fo_entity)
-            else:
-                print(token, *vector, file=fo_word)
-
-            print(token, *vector, file=fo_all)
+    # word_vocab_size = 0
+    # entity_vocab_size = 0
+    # for token in model.wv.vocab:
+    #     if regex_entity.match(token):
+    #         entity_vocab_size += 1
+    #     else:
+    #         word_vocab_size += 1
+    #
+    # total_vocab_size = word_vocab_size + entity_vocab_size
+    # logger.info(f'word vocabulary size: {word_vocab_size}')
+    # logger.info(f'entity vocabulary size: {entity_vocab_size}')
+    # logger.info(f'total vocabulary size: {total_vocab_size}')
+    #
+    # logger.info('writing word/entity vectors to files')
+    # with open(word_vectors_file, 'w') as fo_word, \
+    #      open(entity_vectors_file, 'w') as fo_entity, \
+    #      open(all_vectors_file, 'w') as fo_all:
+    #
+    #     # write word2vec headers to each file
+    #     print(word_vocab_size, args.embed_size, file=fo_word)
+    #     print(entity_vocab_size, args.embed_size, file=fo_entity)
+    #     print(total_vocab_size, args.embed_size, file=fo_all)
+    #
+    #     # write tokens and vectors
+    #     for (token, _) in sorted(model.wv.vocab.items(), key=lambda t: -t[1].count):
+    #         vector = model.wv[token]
+    #
+    #         if regex_entity.match(token):
+    #             print(token[2:-2], *vector, file=fo_entity)
+    #         else:
+    #             print(token, *vector, file=fo_word)
+    #
+    #         print(token, *vector, file=fo_all)
 
 
 if __name__ == "__main__":
