@@ -32,7 +32,7 @@ def main(args):
                      hs=0,
                      iter=args.epoch)
 
-    model.save(all_vectors_file + ".model")
+    model.save(args.output_dir + "/wiki.model")
 
     # word_vocab_size = 0
     # entity_vocab_size = 0
